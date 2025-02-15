@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+huggingface_hub
+colorlog
+transformers
+langchain
+langchain-community
+langchain-huggingface
+pymupdf
+faiss-cpu
+langchain_nvidia_ai_endpoints
+langchain_groq
+python-dotenv
+python-multipart
