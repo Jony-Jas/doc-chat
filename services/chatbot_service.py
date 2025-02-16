@@ -36,7 +36,16 @@ You are an electrical engineer and you will answer questions related to electric
 
 ### Response:"""
 
+prompt_template_plain = """
+You are an expert in electrical engineering and you will answer questions related to electrical engineering from the uploaded pdf context.
+
+Question: {question}
+answer:
+"""
+
 prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
+plain_prompt = PromptTemplate(template=prompt_template_plain, input_variables=["question"])
+
 embeddings = NVIDIAEmbeddings(
 model=os.getenv("NVIDIA_EMBEDDING_MODEL"), 
 api_key=os.getenv("NVIDIA_KEY"), 
@@ -178,3 +187,14 @@ def handle_clear_database(filename: str):
     
     return "Cache cleared successfully."
 
+def answer_question_plain(question: str):
+    rag_chain = (
+        {"question": RunnablePassthrough()}
+        | plain_prompt
+        | llm
+        | RemoveChainOfThoughtOutputParser()
+    )
+
+    query = question
+    answer = rag_chain.invoke(query)
+    return answer

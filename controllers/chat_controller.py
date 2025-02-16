@@ -1,6 +1,6 @@
 from fastapi import APIRouter, File, Query, UploadFile
 from pydantic import BaseModel
-from services.chatbot_service import answer_question, handle_clear_database, handle_upload
+from services.chatbot_service import answer_question, answer_question_plain, handle_clear_database, handle_upload
 
 router = APIRouter()
 
@@ -14,7 +14,8 @@ async def ask_question(request: QuestionRequest, context: str = Query(None)):
     """
     try:
         if context is None:
-            return {"question": request.question, "answer": "Service not available. Use with context. /ask?context=your_context"}
+            answer = answer_question_plain(request.question)
+            return {"question": request.question, "answer": answer}
 
         answer = answer_question(request.question, context)
         return {"question": request.question, "answer": answer}

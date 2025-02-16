@@ -14,7 +14,9 @@
    cd doc-chat
    ```
 
-2. Run the Application 🚀:
+2. Ensure conda is installed. https://www.anaconda.com/download and set set to environment variables
+
+3. Run the Application 🚀:
 
    ```sh
    run_app.bat
@@ -34,13 +36,11 @@ NVIDIA_EMBEDDING_MODEL="nvidia/llama-3.2-nv-embedqa-1b-v2"
 GROQ_CHAT_MODEL="deepseek-r1-distill-llama-70b"
 ```
 
-## Usage
+Links to Get:
 
-1. Start the FastAPI application 🚀:
+NVIDIA_KEY -> https://build.nvidia.com/nvidia/llama-3_2-nv-embedqa-1b-v2
 
-   ```sh
-   ./run_app.bat
-   ```
+GROQ_API_KEY -> https://console.groq.com/keys
 
 ## API Endpoints
 
@@ -49,7 +49,7 @@ GROQ_CHAT_MODEL="deepseek-r1-distill-llama-70b"
 - **URL:** `/upload`
 - **Method:** `POST`
 - **Description:** Upload a PDF document.
-- **Parameters:**
+- **Body:**
 
 | Name | Type         | Description             |
 | ---- | ------------ | ----------------------- |
@@ -82,26 +82,37 @@ GROQ_CHAT_MODEL="deepseek-r1-distill-llama-70b"
 - **URL:** `/ask`
 - **Method:** `POST`
 - **Description:** Ask a question related to the uploaded PDF document.
-- **Parameters:**
+- **Params:**
 
-| Name     | Type   | Description                        |
-| -------- | ------ | ---------------------------------- |
-| question | string | The question to ask.               |
-| context  | string | The context (filename) of the PDF. |
+  | Name    | Type   | Description                        |
+  | ------- | ------ | ---------------------------------- |
+  | context | string | The context (filename) of the PDF. |
+
+- **body:**
+  | Name | Type | Description |
+  | -------- | ------ | ---------------------------------- |
+  | question | string | The question to ask. |
 
 - **Response:**
 
-| Name     | Type   | Description                 |
-| -------- | ------ | --------------------------- |
-| question | string | The question asked.         |
-| answer   | string | The answer to the question. |
-| error    | string | Error message, if any.      |
+  | Name     | Type   | Description                 |
+  | -------- | ------ | --------------------------- |
+  | question | string | The question asked.         |
+  | answer   | string | The answer to the question. |
+  | error    | string | Error message, if any.      |
 
 - **Axios Example:**
   ```javascript
   //<--skip-->
+  axios.post("http://127.0.0.1:8000/ask", {
+    question: "What is AC/DC?",
+  });
+  //<--skip-->
+  ```
+  ```javascript
+  //<--skip-->
   axios.post("http://127.0.0.1:8000/ask?context=fileName", {
-    question: "What is the main topic of the document?",
+    question: "What is the pdf about?",
   });
   //<--skip-->
   ```
@@ -111,7 +122,7 @@ GROQ_CHAT_MODEL="deepseek-r1-distill-llama-70b"
 - **URL:** `/clear`
 - **Method:** `GET`
 - **Description:** Clear the cached data for a specific PDF document.
-- **Parameters:**
+- **Params:**
 
 | Name    | Type   | Description                        |
 | ------- | ------ | ---------------------------------- |

@@ -1,0 +1,11 @@
+services:
+  doc-chat:
+    image: continuumio/miniconda3:4.9.2
+    container_name: doc-chat-container
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - "8000:8000"
+    command: >
+      /bin/bash -c "conda config --set ssl_verify False && ./run_app.sh"
